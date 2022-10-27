@@ -1,0 +1,46 @@
+name: Tag and Release
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - closed
+  workflow_dispatch:
+
+jobs:
+  # Find and check out the commit before the merge commit, then tag it
+  create_tag:
+    # Execute this workflow if:
+    #  a) It was executed manually ('workflow_dispatch') OR
+    #  b) It was triggered by a merged PR that doesn't have certain labels.
+    if: |
+      github.event_name == 'workflow_dispatch' ||
+      (
+        github.event.pull_request.merged == true && 
+        !(
+          contains(github.event.pull_request.labels.*.name, 'no-release') ||
+          contains(github.event.pull_request.labels.*.name, 'github-actions')
+        )
+      )
+
+    name: Create Tag
+    runs-on: ubuntu-latest
+    outputs:
+      new_release_tag: ${{ steps.generate_tag.outputs.tag_name }}
+    steps:
+      - name: Generate tag name
+        id: generate_tag
+        run: |
+          tag_name=$(TZ=America/Chicago date +"%Y-%m-%d-%H%M")
+          echo "tag_name=$tag_name" >> $GITHUB_OUTPUT
+      # Check out master and tag the merge commit. This is to ensure that later
+      # releases do not pick up the current merge commit as a change. Ideally,
+      # we would tag the pre-merge commit instead, but we would likely want to
+      # update the build-body script to list commits instead of merges in that
+      # case. That improvement can be made later.
+      - uses: actions/checkout@v2
+      - name: Tag commit
+        uses: rickstaa/action-create-tag@v1
+        with:
+          tag: ${{ steps.generate_tag.outputs.tag_name }}
