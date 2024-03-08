@@ -39,7 +39,7 @@ jobs:
       # we would tag the pre-merge commit instead, but we would likely want to
       # update the build-body script to list commits instead of merges in that
       # case. That improvement can be made later.
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Tag commit
         uses: rickstaa/action-create-tag@v1
         with:
