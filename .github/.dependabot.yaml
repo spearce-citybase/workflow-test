@@ -1,0 +1,45 @@
+version: 2
+registries:
+  npm-npmjs:
+    type: "npm-registry"
+    url: "https://npm.pkg.github.com"
+    token: "${{secrets.NPM_TOKEN}}"
+
+updates:
+  - package-ecosystem: "npm"
+    open-pull-requests-limit: 0
+    rebase-strategy: "auto"
+    schedule:
+      interval: "daily"
+      time: "09:00"
+      timezone: "America/Chicago"
+    pull-request-branch-name:
+      separator: "-"
+    directory: "/"
+    labels:
+      - "dependencies"
+      - "npm"
+    registries:
+      - "npm-npmjs"
+    commit-message:
+      include: "scope"
+      prefix: "[NPM]"
+    allow:
+      - dependency-type: "production"
+
+  - package-ecosystem: "github-actions"
+    open-pull-requests-limit: 3
+    rebase-strategy: "auto"
+    schedule:
+      interval: "daily"
+      time: "09:00"
+      timezone: "America/Chicago"
+    pull-request-branch-name:
+      separator: "-"
+    directory: "/"
+    labels:
+      - "github-actions"
+      - "dependencies"
+    commit-message:
+      include: "scope"
+      prefix: "[GithubActions]"
