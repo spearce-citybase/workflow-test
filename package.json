@@ -6,6 +6,6 @@
   "author": "Steve Pearce <spearce@thecitybase.com>",
   "license": "MIT",
   "devDependencies": {
-    "react-dev-utils": "^5.0.2"
+    "react-dev-utils": "^11.0.4"
   }
 }
