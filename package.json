@@ -4,5 +4,8 @@
   "main": "index.js",
   "repository": "git@github.com:spearce-citybase/workflow-test.git",
   "author": "Steve Pearce <spearce@thecitybase.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "react-dev-utils": "^5.0.2"
+  }
 }
